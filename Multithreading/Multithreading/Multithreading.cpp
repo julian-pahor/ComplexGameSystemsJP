@@ -15,8 +15,6 @@ void pop_function(circular_queue& a_circular_queue);
 
 const int MAX_VALUE = 50;
 
-
-
 void push_function(circular_queue& a_circular_queue)
 {
 	int count = 0;
