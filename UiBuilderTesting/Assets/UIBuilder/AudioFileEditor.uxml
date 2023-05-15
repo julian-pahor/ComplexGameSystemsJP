@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Label text="Audio File" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 18px; -unity-font-style: bold; -unity-text-align: upper-center;" />
+    <ui:IMGUIContainer name="WavePreview" style="background-image: none; height: 100px;" />
+</ui:UXML>

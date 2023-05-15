@@ -87,7 +87,6 @@ public class TextureWriting : MonoBehaviour
     }
 
     // Update is called once per frame
-    // pee pee poo poo
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R))
