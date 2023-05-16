@@ -5,8 +5,32 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;
+
+    private void OnEnable()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+    }
+
     public List<AudioBundle> bundles = new List<AudioBundle>();
 
+    public Texture2D tex;
+    public void SetTex(Texture2D tx)
+    {
+        tex = tx;
+    }
+    public Texture2D GetTex()
+    {
+        return tex;
+    }
 
     //Used to find all created Bundles and have an easy reference to them within the AudioManager script
     [ContextMenu("GetBundles")]

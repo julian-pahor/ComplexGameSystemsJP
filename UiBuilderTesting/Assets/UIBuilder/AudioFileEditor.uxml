@@ -1,4 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:Label text="Audio File" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 18px; -unity-font-style: bold; -unity-text-align: upper-center;" />
+    <uie:PropertyField binding-path="soundFile" name="AudioFile" style="border-bottom-width: 4px; border-top-width: 4px;" />
+    <ui:VisualElement style="margin-top: 4px; margin-bottom: 4px; background-color: rgba(0, 0, 0, 255);">
+        <uie:PropertyField binding-path="m_volume" />
+        <uie:PropertyField binding-path="m_pitch" />
+    </ui:VisualElement>
     <ui:IMGUIContainer name="WavePreview" style="background-image: none; height: 100px;" />
 </ui:UXML>

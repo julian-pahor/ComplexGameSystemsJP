@@ -13,25 +13,47 @@ public class AudioFile : ScriptableObject
     [Range(-1f, 2f)]
     public float m_pitch = 1f;
 
-    private static float width = 4000;
-    private static float height = 200;
+    private static float width = 1500;
+    private static float height = 75;
     private float sampleBundle;
 
     //Waveform texture loading
     public Texture2D m_texture;
     //Fade in / Out Editing
-
     //Trim Capability 
-
-    private void OnEnable()
+    private AudioClip cacheClip;
+    public AudioClip GetCacheClip()
     {
-        m_texture = new Texture2D((int)width, (int)height);
-        FillTex();
+        return cacheClip;
+    }
+    private Texture2D cacheTex;
+    public Texture2D GetCacheTex()
+    {
+        return cacheTex;
+    }
+
+
+    private bool dirty = false;
+    public bool CheckDirty()
+    {
+        return dirty;
+    }
+
+    public void MakeDirty()
+    {
+        dirty = true;
+    }
+
+    public void Clean()
+    {
+        dirty = false;
     }
 
     [ContextMenu("FillTex")]
-    private void FillTex()
+    public void FillTex()
     {
+        m_texture = new Texture2D((int)width, (int)height);
+
         float[] samples = new float[soundFile.samples * soundFile.channels];
 
         soundFile.GetData(samples, 0);
@@ -91,7 +113,10 @@ public class AudioFile : ScriptableObject
             }
         }
 
-
         m_texture.Apply();
+
+        cacheTex = m_texture;
+
+        cacheClip = soundFile;
     }
 }
