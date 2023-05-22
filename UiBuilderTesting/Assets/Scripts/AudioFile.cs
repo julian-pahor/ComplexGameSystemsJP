@@ -13,6 +13,8 @@ public class AudioFile : ScriptableObject
     [Range(-1f, 2f)]
     public float m_pitch = 1f;
 
+    public bool spatialPosition;
+
     private static float width = 1500;
     private static float height = 75;
     private float sampleBundle;
@@ -32,27 +34,10 @@ public class AudioFile : ScriptableObject
         return cacheTex;
     }
 
-
-    private bool dirty = false;
-    public bool CheckDirty()
-    {
-        return dirty;
-    }
-
-    public void MakeDirty()
-    {
-        dirty = true;
-    }
-
-    public void Clean()
-    {
-        dirty = false;
-    }
-
     [ContextMenu("FillTex")]
     public void FillTex()
     {
-        m_texture = new Texture2D((int)width, (int)height);
+        m_texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
 
         float[] samples = new float[soundFile.samples * soundFile.channels];
 
@@ -66,22 +51,36 @@ public class AudioFile : ScriptableObject
 
         for (int i = 0; i < samples.Length; i += (int)sampleBundle)
         {
-            texSamples[f] = samples[i] * (height / 2);
+            texSamples[f] = samples[i] * (height / 2) * m_volume;
             f++;
         }
 
-        //Defaulting texture to have a black background
-        for (int x = 0; x < width; x++)
+        Color32 black = new Color32(0, 0, 0, 255);
+
+        var data = m_texture.GetRawTextureData<Color32>();
+
+        int index = 0;
+
+        for(int y = 0; y < m_texture.height; y++)
         {
-            for (int y = 0; y < width; y++)
+            for (int x = 0; x < m_texture.width; x++)
             {
-                m_texture.SetPixel(x, y, Color.black);
+                data[index++] = black;
             }
         }
 
-        Color color = Color.green;
+        //Defaulting texture to have a black background
+        //for (int x = 0; x < width; x++)
+        //{
+        //    for (int y = 0; y < width; y++)
+        //    {
+        //        m_texture.SetPixel(x, y, Color.black);
+        //    }
+        //}
 
+        Color color = Color.red;
 
+        // https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html
 
         for (int i = 0; i < texSamples.Length; i++)
         {
@@ -94,7 +93,7 @@ public class AudioFile : ScriptableObject
                 case (true):
                     while (texSamples[i] + y > 0)
                     {
-                        m_texture.SetPixel(i, (int)texSamples[i] + (int)height / 2 + y, color);
+                        m_texture.SetPixel(i, (int)texSamples[i]  + (int)height / 2 + y, color);
                         y--;
                     }
 

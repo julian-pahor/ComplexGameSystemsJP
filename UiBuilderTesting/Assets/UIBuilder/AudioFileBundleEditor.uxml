@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Label text="Audio File Bundle" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; font-size: 26px; -unity-font-style: italic; color: rgb(204, 72, 13);" />
+    <ui:VisualElement>
+        <uie:PropertyField binding-path="audioFiles" />
+    </ui:VisualElement>
+    <ui:VisualElement name="VolumeRange">
+        <ui:Label text="Volume Range" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; font-size: 14px; -unity-font-style: bold;" />
+        <ui:VisualElement name="MinMaxArea" style="align-items: stretch; justify-content: center; flex-wrap: nowrap; overflow: visible; flex-direction: row;">
+            <uie:FloatField value="42.2" style="width: 40px; height: 20px; justify-content: center; align-items: center; flex-direction: row-reverse; padding-right: 4px; padding-left: 4px;" />
+            <ui:MinMaxSlider picking-mode="Ignore" min-value="0.75" max-value="1.25" low-limit="0.75" high-limit="1.25" style="margin-right: 1px; margin-left: 1px; justify-content: center; padding-right: 0; padding-left: 2px; height: auto; width: 270px; max-width: none; min-width: 240px;" />
+            <uie:FloatField value="42.2" style="width: 40px; height: 20px; justify-content: center; align-items: center; padding-left: 4px; padding-right: 4px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="PitchRange">
+        <ui:Label text="Pitch Range" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; font-size: 14px; -unity-font-style: bold;" />
+        <ui:VisualElement name="MinMaxArea" style="align-items: stretch; justify-content: center; flex-wrap: nowrap; overflow: visible; flex-direction: row;">
+            <uie:FloatField value="42.2" style="width: 40px; height: 20px; justify-content: center; align-items: center; flex-direction: row-reverse; padding-right: 4px; padding-left: 4px;" />
+            <ui:MinMaxSlider picking-mode="Ignore" min-value="0.75" max-value="1.25" low-limit="0.75" high-limit="1.25" style="margin-right: 1px; margin-left: 1px; justify-content: center; padding-right: 0; padding-left: 2px; height: auto; width: 270px; max-width: none; min-width: 240px;" />
+            <uie:FloatField value="42.2" style="width: 40px; height: 20px; justify-content: center; align-items: center; padding-left: 4px; padding-right: 4px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

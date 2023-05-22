@@ -4,36 +4,44 @@ using UnityEngine;
 
 public class AudioSetData : MonoBehaviour
 {
-    public AudioSource _as;
+    //public AudioSource _as;
 
-    private AudioClip clip;
+    //private AudioClip clip;
+
+    private AFEvent afEvent;
 
     // Start is called before the first frame update
     void Start()
     {
-        clip = _as.clip;
-        _as.loop = false;
+        //clip = _as.clip;
+        //_as.loop = false;
+        afEvent = GetComponent<AFEvent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.K))
         {
-            _as.Play();
+            afEvent.FireAudio();
+
         }
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    _as.Play();
+        //}
 
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            float[] samples = new float[clip.samples * clip.channels];
-            _as.clip.GetData(samples, 0);
+        //if(Input.GetKeyDown(KeyCode.P))
+        //{
+        //    float[] samples = new float[clip.samples * clip.channels];
+        //    _as.clip.GetData(samples, 0);
 
-            for(int i = 0; i < samples.Length - 1; i++)
-            {
-                samples[i] = samples[i] * 0.75f;
-            }
+        //    for(int i = 0; i < samples.Length - 1; i++)
+        //    {
+        //        samples[i] = samples[i] * 0.75f;
+        //    }
 
-            _as.clip.SetData(samples, 0);
-        }
+        //    _as.clip.SetData(samples, 0);
+        //}
     }
 }

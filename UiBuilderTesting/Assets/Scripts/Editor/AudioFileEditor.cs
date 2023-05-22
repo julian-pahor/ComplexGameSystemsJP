@@ -4,15 +4,23 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
+using UnityEngine.Rendering.VirtualTexturing;
+
 
 [CustomEditor(typeof(AudioFile))]
 public class AudioFileEditor : Editor
-{
+{ 
     public VisualTreeAsset m_UXML;
 
     private VisualElement root;
 
     public Texture2D defaultTex;
+
+    private AudioFile baseObj;
+
+    private bool dirty = true;
+
+    public override bool RequiresConstantRepaint() => dirty;
 
     public override VisualElement CreateInspectorGUI()
     {
@@ -26,25 +34,23 @@ public class AudioFileEditor : Editor
 
         audioFile.RegisterCallback<ChangeEvent<Object>, VisualElement>(WaveUpdate, waveTarget);
 
-        var obj = serializedObject.targetObject as AudioFile;
+        baseObj = serializedObject.targetObject as AudioFile;
 
-        if(obj.GetCacheTex() != null)
+        if (baseObj.GetCacheTex() != null)
         {
-            waveTarget.style.backgroundImage = obj.GetCacheTex();
+            waveTarget.style.backgroundImage = baseObj.GetCacheTex();
+            dirty = false;
+        }
+        else if (baseObj.soundFile != null)
+        {
+            baseObj.FillTex();
+            waveTarget.style.backgroundImage = baseObj.GetCacheTex();
+            dirty = false;
         }
         else
         {
             waveTarget.style.backgroundImage = defaultTex;
         }
-
-        // Draw the default inspector
-
-        //var foldout = new Foldout() { viewDataKey = "AudioFileDefaultInspector", text = "Default Inspector" };
-
-        //InspectorElement.FillDefaultInspector(foldout, serializedObject, this);
-
-        //root.Add(foldout);
-
 
         return root;
     }
@@ -61,10 +67,10 @@ public class AudioFileEditor : Editor
         }
         else
         {
-            baseClass.MakeDirty();
+            dirty = true;
         }
 
-        if (!baseClass.CheckDirty())
+        if (!dirty)
         {
             return;
         }
@@ -77,7 +83,10 @@ public class AudioFileEditor : Editor
 
         waveTarget.style.backgroundImage = waveTex;
 
-        baseClass.Clean();
+        Repaint();
 
+        dirty = false;
     }
 }
+
+

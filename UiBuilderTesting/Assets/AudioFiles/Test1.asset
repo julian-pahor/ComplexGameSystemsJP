@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b316912260b10fc4d818f6ae886a9250, type: 3}
-  m_Name: New Audio File
+  m_Name: Test1
   m_EditorClassIdentifier: 
   soundFile: {fileID: 8300000, guid: 70afd4c3874f90a459fc59e4488d43e4, type: 3}
-  m_volume: 1
+  m_volume: 0.134
   m_pitch: 1
+  spatialPosition: 0
   m_texture: {fileID: 0}
