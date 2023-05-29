@@ -376,7 +376,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564243195}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3a118d8e1ec73a479f2be523ec38988, type: 3}
   m_Name: 
@@ -455,11 +455,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564243195}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01fe3f3ea79992041bb0d67b32487264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _as: {fileID: 1388461124}
+  al: {fileID: 11400000, guid: c09d89c2d0914974d983bf4b856b478d, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,6 +817,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fe3f3ea79992041bb0d67b32487264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _as: {fileID: 0}
+  al: {fileID: 0}
 --- !u!4 &1318044951
 Transform:
   m_ObjectHideFlags: 0
@@ -857,7 +861,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 70afd4c3874f90a459fc59e4488d43e4, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1071,7 +1075,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   asPreFab: {fileID: 1028622538628964328, guid: d137f09834cd46b4797a73a4fec6f810, type: 3}
-  bundles:
+  AFBundles:
   - {fileID: 11400000, guid: 67bc4240789c42145915605a56f3f04e, type: 2}
   - {fileID: 11400000, guid: 456c31e36ad97b048a56acdc13c6eb3c, type: 2}
   - {fileID: 11400000, guid: e00167242c5c25940a7f0596f0f3502e, type: 2}
+  ALBundles: []

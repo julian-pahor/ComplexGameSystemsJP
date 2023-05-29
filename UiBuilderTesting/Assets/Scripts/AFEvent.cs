@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("AudioManager/AFEvent")]
 public class AFEvent : MonoBehaviour
 {
     public AudioFileBundle targetBundle;

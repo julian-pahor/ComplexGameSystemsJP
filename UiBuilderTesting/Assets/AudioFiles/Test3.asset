@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Test3
   m_EditorClassIdentifier: 
   soundFile: {fileID: 8300000, guid: 759c493124960fd48adf321df44546d6, type: 3}
+  audio: {fileID: 0}
   m_volume: 0.844
   m_pitch: 1
   spatialPosition: 0

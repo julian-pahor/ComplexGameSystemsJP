@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class AudioFile : ScriptableObject
 {
     public AudioClip soundFile;
+    public AudioClip audio;
     [Header("Local Volume + Pitch Settings")]
     [Range(0f, 1f)]
     public float m_volume = 1f;
@@ -15,8 +16,8 @@ public class AudioFile : ScriptableObject
 
     public bool spatialPosition;
 
-    private static float width = 1500;
-    private static float height = 75;
+    private static float width = 2000;
+    private static float height = 150;
     private float sampleBundle;
 
     //Waveform texture loading
@@ -56,61 +57,62 @@ public class AudioFile : ScriptableObject
         }
 
         Color32 black = new Color32(0, 0, 0, 255);
+        Color32 orange = new Color32(255, 165, 0, 255);
+        Color color = Color.magenta;
 
         var data = m_texture.GetRawTextureData<Color32>();
+        //int audioIndex = 0;
 
-        int index = 0;
+        //drawing index = bottom left -> bottom right -> up row
 
-        for(int y = 0; y < m_texture.height; y++)
-        {
-            for (int x = 0; x < m_texture.width; x++)
-            {
-                data[index++] = black;
-            }
-        }
-
-        //Defaulting texture to have a black background
-        //for (int x = 0; x < width; x++)
+        //for (int x = 0; x < m_texture.width; x++)
         //{
-        //    for (int y = 0; y < width; y++)
+        //    for (int y = 0; y < m_texture.height; y++)
         //    {
-        //        m_texture.SetPixel(x, y, Color.black);
+        //        data[index++] = index > 125000 && index < 175000  ? black : orange;
         //    }
         //}
 
-        Color color = Color.red;
+        for(int x = 0; x < m_texture.width - 1; x++)
+        {
+            for(int y = 0; y < m_texture.height - 1; y++)
+            {
+                int index = (y + (x * (int)height));
+                data[index] = index % height == 0 ? black : orange;
+            }
+        }
 
         // https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html
 
-        for (int i = 0; i < texSamples.Length; i++)
-        {
-            m_texture.SetPixel(i, (int)texSamples[i] + (int)height / 2, color);
+        //for (int i = 0; i < texSamples.Length; i++)
+        //{
+        //    m_texture.SetPixel(i, (int)texSamples[i] + (int)height / 2, color);
 
-            int y = 0;
+        //    int y = 0;
 
-            switch (texSamples[i] > 0)
-            {
-                case (true):
-                    while (texSamples[i] + y > 0)
-                    {
-                        m_texture.SetPixel(i, (int)texSamples[i]  + (int)height / 2 + y, color);
-                        y--;
-                    }
+        //    switch (texSamples[i] > 0)
+        //    {
+        //        case (true):
+        //            while (texSamples[i] + y > 0)
+        //            {
+        //                m_texture.SetPixel(i, (int)texSamples[i]  + (int)height / 2 + y, color);
+        //                y--;
+        //            }
 
-                    break;
-                case (false):
-                    while (texSamples[i] + y < 0)
-                    {
-                        m_texture.SetPixel(i, (int)texSamples[i] + (int)height / 2 + y, color);
-                        y++;
-                    }
+        //            break;
+        //        case (false):
+        //            while (texSamples[i] + y < 0)
+        //            {
+        //                m_texture.SetPixel(i, (int)texSamples[i] + (int)height / 2 + y, color);
+        //                y++;
+        //            }
 
 
-                    break;
-                default:
+        //            break;
+        //        default:
 
-            }
-        }
+        //    }
+        //}
 
         m_texture.Apply();
 

@@ -38,7 +38,7 @@ public class AudioFileBundle : ScriptableObject
 
         AudioInfo ai = new AudioInfo();
 
-        ai.clip = clipList[index].soundFile;
+        ai.clip = clipList[index].audio;
         ai.volume = clipList[index].m_volume * Random.Range(volumeMin, volumeMax);
         ai.pitch = clipList[index].m_pitch * Random.Range(pitchMin, pitchMax);
         ai.spatial = clipList[index].spatialPosition;

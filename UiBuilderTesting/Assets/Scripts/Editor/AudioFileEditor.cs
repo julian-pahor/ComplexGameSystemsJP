@@ -20,6 +20,8 @@ public class AudioFileEditor : Editor
 
     private bool dirty = true;
 
+    VisualElement waveTarget;
+
     public override bool RequiresConstantRepaint() => dirty;
 
     public override VisualElement CreateInspectorGUI()
@@ -28,9 +30,13 @@ public class AudioFileEditor : Editor
 
         m_UXML.CloneTree(root);
 
-        VisualElement waveTarget = UQueryExtensions.Query(root, name = "WavePreview");
+        waveTarget = UQueryExtensions.Query(root, name = "WavePreview");
 
         VisualElement audioFile = UQueryExtensions.Query(root, name = "AudioFile");
+
+        //VisualElement volumeField = UQueryExtensions.Query(root, name = "VolumeField");
+
+        //volume.RegisterValueChangedCallback(OnPointerUp);
 
         audioFile.RegisterCallback<ChangeEvent<Object>, VisualElement>(WaveUpdate, waveTarget);
 
@@ -77,11 +83,28 @@ public class AudioFileEditor : Editor
 
         waveTarget.Clear();
 
-        baseClass.FillTex();
+        baseObj.FillTex();
 
         Texture2D waveTex = baseClass.m_texture;
 
         waveTarget.style.backgroundImage = waveTex;
+
+        Repaint();
+
+        dirty = false;
+    }
+
+    void OnPointerUp(ChangeEvent<float> f)
+    {
+        var baseClass = serializedObject.targetObject as AudioFile;
+
+        dirty = true;
+
+        waveTarget.Clear();
+
+        baseObj.FillTex();
+
+        waveTarget.style.backgroundImage = baseClass.GetCacheTex();
 
         Repaint();
 
