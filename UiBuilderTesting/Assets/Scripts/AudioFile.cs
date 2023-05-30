@@ -42,77 +42,73 @@ public class AudioFile : ScriptableObject
 
         float[] samples = new float[soundFile.samples * soundFile.channels];
 
+        ///pcm data of audioclip (Range: -1<->1)
         soundFile.GetData(samples, 0);
 
         sampleBundle = samples.Length / width + 1;
 
         float[] texSamples = new float[(int)width];
-
+        bool[] wavePix = new bool[(int)width * (int)height];
+        
         int f = 0;
 
+        //Scale down pcm data to match length of texture width
+        //Also scale pcm data to range (0<->150)
         for (int i = 0; i < samples.Length; i += (int)sampleBundle)
         {
-            texSamples[f] = samples[i] * (height / 2) * m_volume;
+            float waa = samples[i];
+            waa *= height / 2;
+            waa *= m_volume;
+            texSamples[f] = waa;
             f++;
+        }
+
+        //setting true at each index where the wave will be drawn
+        for (int i = 0; i < texSamples.Length; i++)
+        {
+            wavePix[i + (int)((texSamples[i] + height / 2) * width)] = true;
+
+            int y = 0;
+
+            switch (texSamples[i] > 0)
+            {
+                case (true):
+                    while (texSamples[i] + y > 0)
+                    {
+                        wavePix[i + (int)((texSamples[i] + height / 2 + y) * width)] = true;
+                        y--;
+                    }
+
+                    break;
+                case (false):
+                    while (texSamples[i] + y < 0)
+                    {
+                        wavePix[i + (int)((texSamples[i] + height / 2 + y) * width)] = true;
+                        y++;
+                    }
+                    break;
+                default:
+            }
         }
 
         Color32 black = new Color32(0, 0, 0, 255);
         Color32 orange = new Color32(255, 165, 0, 255);
-        Color color = Color.magenta;
+
+
+        // https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html
 
         var data = m_texture.GetRawTextureData<Color32>();
         //int audioIndex = 0;
 
         //drawing index = bottom left -> bottom right -> up row
-
-        //for (int x = 0; x < m_texture.width; x++)
-        //{
-        //    for (int y = 0; y < m_texture.height; y++)
-        //    {
-        //        data[index++] = index > 125000 && index < 175000  ? black : orange;
-        //    }
-        //}
-
-        for(int x = 0; x < m_texture.width - 1; x++)
+        for (int x = 0; x < m_texture.width; x++)
         {
-            for(int y = 0; y < m_texture.height - 1; y++)
+            for (int y = 0; y < m_texture.height; y++)
             {
-                int index = (y + (x * (int)height));
-                data[index] = index % height == 0 ? black : orange;
+                int index = (x + (y * (int)width));
+                data[index] = wavePix[index] ? orange : black;
             }
         }
-
-        // https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html
-
-        //for (int i = 0; i < texSamples.Length; i++)
-        //{
-        //    m_texture.SetPixel(i, (int)texSamples[i] + (int)height / 2, color);
-
-        //    int y = 0;
-
-        //    switch (texSamples[i] > 0)
-        //    {
-        //        case (true):
-        //            while (texSamples[i] + y > 0)
-        //            {
-        //                m_texture.SetPixel(i, (int)texSamples[i]  + (int)height / 2 + y, color);
-        //                y--;
-        //            }
-
-        //            break;
-        //        case (false):
-        //            while (texSamples[i] + y < 0)
-        //            {
-        //                m_texture.SetPixel(i, (int)texSamples[i] + (int)height / 2 + y, color);
-        //                y++;
-        //            }
-
-
-        //            break;
-        //        default:
-
-        //    }
-        //}
 
         m_texture.Apply();
 

@@ -2,14 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public struct ALPoints
-{
-    public double start;
-    public double duration;
-}
-
-
 [CreateAssetMenu(menuName = "AudioManagerName/AudioLoop", order = 4)]
 public class AudioLoop : ScriptableObject
 {
@@ -64,15 +56,4 @@ public class AudioLoop : ScriptableObject
             fadeOutDuration = Mathf.Clamp(fadeOutDuration, 0.0f, soundFile.length / 2);
         }
     }
-
-
-    //public ALPoints GetClipTimes()
-    //{
-    //    ALPoints points = new ALPoints();
-
-    //    double duration = soundFile.samples / soundFile.frequency;
-
-    //    return points;
-    //}
-
 }
