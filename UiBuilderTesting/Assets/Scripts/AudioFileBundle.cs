@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 [CreateAssetMenu(menuName = "AudioManagerName/AudioBundle", order = 3)]
 public class AudioFileBundle : ScriptableObject
 {
-    public List<AudioFile> audioFiles = new List<AudioFile>();
+    public AudioFile[] audioFiles;
     
     private int index = -1;
     public bool randomize;

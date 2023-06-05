@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab569004c9ab344ab9ce53567ceb67d, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  soundFile: {fileID: 8300000, guid: 5630b3b8702271845a34865a691615f8, type: 3}
+  soundFile: {fileID: 8300000, guid: 759c493124960fd48adf321df44546d6, type: 3}
   audio: {fileID: 0}
   m_volume: 1
   m_pitch: 1
   spatialPosition: 1
   looping: 1
   clipEnable: 1
-  startTime: 1.1099375
-  endTime: 0.5
+  startTime: 0.37809524
+  endTime: 0.37809524
   fadeEnable: 0
   fadeInDuration: 0.5549688
   fadeOutDuration: 0.5549688

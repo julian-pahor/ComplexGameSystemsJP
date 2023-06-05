@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b316912260b10fc4d818f6ae886a9250, type: 3}
   m_Name: Test4
   m_EditorClassIdentifier: 
-  soundFile: {fileID: 8300000, guid: 2362d2b19a0a9f9489f91f6108e8d5f7, type: 3}
+  soundFile: {fileID: 8300000, guid: 5630b3b8702271845a34865a691615f8, type: 3}
   audio: {fileID: 0}
-  m_volume: 1
-  m_pitch: 1.51
+  m_volume: 0.44
+  m_pitch: 0.79
   spatialPosition: 0
+  clipEnable: 0
+  startTime: 0
+  endTime: 0
   m_texture: {fileID: 0}

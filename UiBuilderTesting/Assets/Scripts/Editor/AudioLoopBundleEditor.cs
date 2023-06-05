@@ -5,8 +5,8 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 
-[CustomEditor(typeof(AudioFileBundle))]
-public class AudioFileBundleEditor : Editor
+[CustomEditor(typeof(AudioLoopBundle))]
+public class AudioLoopBundleEditor : Editor
 {
     public VisualTreeAsset m_UXML;
 

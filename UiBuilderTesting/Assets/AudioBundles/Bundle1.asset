@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afd2e02f3cbda5428aee0702786db89, type: 3}
   m_Name: Bundle1
   m_EditorClassIdentifier: 
-  audioFiles: []
+  audioFiles:
+  - {fileID: 11400000, guid: bfa9bb786f9a3e44287611d765b1c808, type: 2}
   randomize: 0
   neverRepeat: 0
-  volumeRange: 0
-  pitchRange: 0
+  volumeMin: 0
+  volumeMax: 0
+  pitchMin: 0
+  pitchMax: 0
   targetBus: {fileID: 0}

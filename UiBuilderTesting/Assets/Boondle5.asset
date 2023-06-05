@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Boondle5
   m_EditorClassIdentifier: 
   audioFiles:
-  - {fileID: 11400000, guid: c5007d2c31b2c7947b24872094ef62b9, type: 2}
   - {fileID: 11400000, guid: bfa9bb786f9a3e44287611d765b1c808, type: 2}
-  - {fileID: 11400000, guid: e96dd50f3f5184042872a6d6889efa31, type: 2}
+  - {fileID: 11400000, guid: c5007d2c31b2c7947b24872094ef62b9, type: 2}
+  - {fileID: 11400000, guid: c5007d2c31b2c7947b24872094ef62b9, type: 2}
   randomize: 0
   neverRepeat: 1
   volumeMin: 0.8

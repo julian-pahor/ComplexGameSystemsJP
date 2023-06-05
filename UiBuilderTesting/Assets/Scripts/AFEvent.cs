@@ -8,19 +8,7 @@ public class AFEvent : MonoBehaviour
 {
     public AudioFileBundle targetBundle;
 
-    public enum CallType
-    {
-        OnAwake,
-        OnStart,
-        OnStop,
-        OnEnable,
-        OnDisable,
-        OnDestroy,
-        OnColliderEnter,
-        OnColliderExit,
-        OnTriggerEnter,
-        OnTriggerExit,
-    }
+
 
     [SerializeField]
     private List<CallType> playCalls = new List<CallType>();

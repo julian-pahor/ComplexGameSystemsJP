@@ -10,7 +10,23 @@ public struct AudioInfo
     public float volume;
     public float pitch;
     public bool spatial;
+    public bool looping;
 }
+
+public enum CallType
+{
+    OnAwake,
+    OnStart,
+    OnStop,
+    OnEnable,
+    OnDisable,
+    OnDestroy,
+    OnColliderEnter,
+    OnColliderExit,
+    OnTriggerEnter,
+    OnTriggerExit,
+}
+
 public class AudioManager : MonoBehaviour
 {
 
@@ -100,11 +116,70 @@ public class AudioManager : MonoBehaviour
         audio.clip = ai.clip;
         audio.volume = ai.volume;
         audio.pitch = ai.pitch;
+        audio.loop = false;
         audio.spatialBlend = ai.spatial ? 1 : 0;
         audio.Play();
         StartCoroutine(CleanUp(audio));
     }
 
+    //Hosts a group of AudioLoops under packet name of the ScriptableObject
+    //PROBLEM: Currently leaves hanging go's if needing to fire an AL multiple times
+    public GameObject FireAL(AudioInfo[] ai, Transform t, string s)
+    {
+        GameObject packet = new GameObject(s);
+        packet.transform.parent = this.transform;
+
+        foreach(AudioInfo audio in ai)
+        {
+            GameObject go = Instantiate(asPreFab, packet.transform);
+            go.transform.position = t.position;
+            AudioSource source = go.GetComponent<AudioSource>();
+            source.clip = audio.clip;
+            source.volume = audio.volume;
+            source.pitch = audio.pitch;
+            source.loop = audio.looping; //Swapping to sample accurate looping
+            source.spatialBlend = audio.spatial ? 1 : 0;
+            source.Play();
+            
+            if(!source.loop)
+            {
+                StartCoroutine(CleanUp(source));
+            }
+        }
+
+        return packet;
+    }
+
+    public void PauseAL(GameObject go)
+    {
+        foreach (Transform obj in go.transform)
+        {
+            obj.GetComponent<AudioSource>().Pause();
+        }
+    }
+
+    public void ResumeAL(GameObject go)
+    {
+        foreach (Transform obj in go.transform)
+        {
+            obj.GetComponent<AudioSource>().UnPause();
+        }
+    }
+
+    public void StopAL(GameObject go)
+    {
+        foreach(Transform obj in go.transform)
+        {
+            obj.GetComponent<AudioSource>().Stop();
+        }
+
+        Destroy(go);
+    }
+
+    //To Add:
+    //Logarithmic Fading 
+
+    //Read Clipping info and create new audio from that
     public static void Initialise(AudioLoop al)
     {
         if(!al.clipEnable)
@@ -136,7 +211,31 @@ public class AudioManager : MonoBehaviour
 
     public static void Initialise(AudioFile af)
     {
+        if (!af.clipEnable)
+        {
+            return;
+        }
 
+        float[] samples = new float[af.soundFile.samples * af.soundFile.channels];
+        af.soundFile.GetData(samples, 0);
+
+        double startSample = af.startTime * af.soundFile.frequency;
+        double endSample = af.endTime * af.soundFile.frequency;
+
+        int newSampleLength = samples.Length - ((int)startSample * af.soundFile.channels) - ((int)endSample * af.soundFile.channels);
+
+        float[] newSamples = new float[newSampleLength];
+
+        int j = 0;
+        for (int i = (int)startSample * af.soundFile.channels; i < samples.Length - ((int)endSample * af.soundFile.channels); i++)
+        {
+            newSamples[j] = samples[i];
+            j++;
+        }
+
+        af.audio = AudioClip.Create(af.soundFile.name + "_audio", newSamples.Length, af.soundFile.channels, af.soundFile.frequency, false);
+
+        af.audio.SetData(newSamples, 0);
     }
 
     private IEnumerator CleanUp(AudioSource audio)

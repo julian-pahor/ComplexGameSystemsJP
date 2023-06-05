@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,8 +18,13 @@ public class AudioFile : ScriptableObject
 
     public bool spatialPosition;
 
+    public bool clipEnable = false;
+    //Second clipping (Time clipped from start + end of audio clip)
+    public float startTime = 0;
+    public float endTime = 0;
+
     private static float width = 2000;
-    private static float height = 150;
+    private static float height = 125;
     private float sampleBundle;
 
     //Waveform texture loading
@@ -38,6 +45,32 @@ public class AudioFile : ScriptableObject
     [ContextMenu("FillTex")]
     public void FillTex()
     {
+        if(soundFile == null)
+        {
+            m_texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
+
+            Color32 b = new Color32(0, 0, 0, 255);
+
+            var dat = m_texture.GetRawTextureData<Color32>();
+
+            for (int x = 0; x < m_texture.width; x++)
+            {
+                for (int y = 0; y < m_texture.height; y++)
+                {
+                    int index = (x + (y * (int)width));
+                    dat[index] = b;
+                }
+            }
+
+            m_texture.Apply();
+
+            cacheTex = m_texture;
+
+            cacheClip = null;
+
+            return;
+        }
+
         m_texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
 
         float[] samples = new float[soundFile.samples * soundFile.channels];
@@ -48,12 +81,14 @@ public class AudioFile : ScriptableObject
         sampleBundle = samples.Length / width + 1;
 
         float[] texSamples = new float[(int)width];
-        bool[] wavePix = new bool[(int)width * (int)height];
-        
+
         int f = 0;
 
+        var data = m_texture.GetRawTextureData<Color32>();
+        // https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html
+
         //Scale down pcm data to match length of texture width
-        //Also scale pcm data to range (0<->150)
+        //Also scale pcm data to range (0<->100)
         for (int i = 0; i < samples.Length; i += (int)sampleBundle)
         {
             float waa = samples[i];
@@ -63,50 +98,75 @@ public class AudioFile : ScriptableObject
             f++;
         }
 
-        //setting true at each index where the wave will be drawn
-        for (int i = 0; i < texSamples.Length; i++)
-        {
-            wavePix[i + (int)((texSamples[i] + height / 2) * width)] = true;
-
-            int y = 0;
-
-            switch (texSamples[i] > 0)
-            {
-                case (true):
-                    while (texSamples[i] + y > 0)
-                    {
-                        wavePix[i + (int)((texSamples[i] + height / 2 + y) * width)] = true;
-                        y--;
-                    }
-
-                    break;
-                case (false):
-                    while (texSamples[i] + y < 0)
-                    {
-                        wavePix[i + (int)((texSamples[i] + height / 2 + y) * width)] = true;
-                        y++;
-                    }
-                    break;
-                default:
-            }
-        }
-
         Color32 black = new Color32(0, 0, 0, 255);
         Color32 orange = new Color32(255, 165, 0, 255);
-
-
-        // https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html
-
-        var data = m_texture.GetRawTextureData<Color32>();
-        //int audioIndex = 0;
+        Color32 cyan = new Color32(154, 244, 249, 255);
 
         //drawing index = bottom left -> bottom right -> up row
         for (int x = 0; x < m_texture.width; x++)
         {
-            for (int y = 0; y < m_texture.height; y++)
+            int i = 0;
+
+            bool trigger = false;
+
+            if (texSamples[x] > 0)
             {
-                int index = (x + (y * (int)width));
-                data[index] = wavePix[index] ? orange : black;
+                //drawing from peak
+                for (int y = m_texture.height - 1; y > -1; y--)
+                {
+                    int index = (x + (y * (int)width));
+
+                    data[index] = y == (int)texSamples[x] + ((int)height / 2 + i) ? cyan : black;
+                    
+                    if(y == (int)texSamples[x] + ((int)height / 2))
+                    {
+                        trigger = true;
+                    }
+                    else if (texSamples[x] + i < 0)
+                    {
+                        trigger = false;
+                    }
+
+                    if (trigger)
+                    {
+                        i--;
+                    }
+                }
+            }
+            else if (texSamples[x] < 0)
+            {
+                //drawing from dip
+                for (int y = 0; y < m_texture.height; y++)
+                {
+                    int index = (x + (y * (int)width));
+
+                    data[index] = y == (int)texSamples[x] + (int)height / 2 + i ? cyan : black;
+
+                    if (y == (int)texSamples[x] + ((int)height / 2))
+                    {
+                        trigger = true;
+                    }
+                    else if (texSamples[x] + i > 0)
+                    {
+                        trigger = false;
+                    }
+
+                    if (trigger)
+                    {
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                int half = (int)height / 2;
+                //drawing a 0 sample value
+                for (int y = 0; y < m_texture.height; y ++)
+                {
+                    int index = (x + (y * (int)width));
+
+                    data[index] = y == half ? cyan : black;
+                }
             }
         }
 

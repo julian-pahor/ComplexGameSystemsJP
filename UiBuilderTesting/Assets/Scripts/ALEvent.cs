@@ -4,14 +4,66 @@ using UnityEngine;
 
 public class ALEvent : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public AudioLoopBundle targetBundle;
+
+    [SerializeField]
+    private CallType playCall;
+    [SerializeField] 
+    private CallType stopCall;
+
+    //Pause Call?
+
+    private void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
+    {
+        
+    }
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
+    private void OnDestroy()
+    {
+        
+    }
+
+    public void FireLoop()
+    {
+
+    }
+
+    public void StopLoop()
+    {
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+    private void OnTriggerExit(Collider other)
     {
         
     }

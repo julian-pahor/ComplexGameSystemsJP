@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundFile: {fileID: 8300000, guid: 2362d2b19a0a9f9489f91f6108e8d5f7, type: 3}
   audio: {fileID: 0}
-  m_volume: 0.844
-  m_pitch: 1
+  m_volume: 0.903
+  m_pitch: 0.57
   spatialPosition: 0
+  clipEnable: 0
+  startTime: 0
+  endTime: 0
   m_texture: {fileID: 0}
