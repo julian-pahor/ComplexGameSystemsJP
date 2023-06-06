@@ -11,7 +11,7 @@ public class AudioLoopBundle : ScriptableObject
 
     private GameObject packet;
 
-    public void FireAudio(AudioInfo[] ai, Transform t)
+    public void FireAudio(Transform t)
     {
         packet = AudioManager.Instance.FireAL(GetAudio(), t, this.name);
     }

@@ -17,7 +17,6 @@ public enum CallType
 {
     OnAwake,
     OnStart,
-    OnStop,
     OnEnable,
     OnDisable,
     OnDestroy,
@@ -182,7 +181,7 @@ public class AudioManager : MonoBehaviour
     //Read Clipping info and create new audio from that
     public static void Initialise(AudioLoop al)
     {
-        if(!al.clipEnable)
+        if(!al.clipEnable || (al.startTime == 0 && al.endTime == 0))
         {
             return;
         }
@@ -211,7 +210,7 @@ public class AudioManager : MonoBehaviour
 
     public static void Initialise(AudioFile af)
     {
-        if (!af.clipEnable)
+        if (!af.clipEnable || (af.startTime == 0 && af.endTime == 0))
         {
             return;
         }

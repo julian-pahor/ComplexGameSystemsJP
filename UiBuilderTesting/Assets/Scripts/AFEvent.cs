@@ -91,7 +91,5 @@ public class AFEvent : MonoBehaviour
         }
     }
 
-    ///Collision / Trigger
-
     //Play (General UnityEvent)
 }

@@ -361,7 +361,6 @@ GameObject:
   - component: {fileID: 564243198}
   - component: {fileID: 564243197}
   - component: {fileID: 564243196}
-  - component: {fileID: 564243200}
   m_Layer: 0
   m_Name: TerribleIdeaBox
   m_TagString: Untagged
@@ -448,20 +447,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &564243200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564243195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01fe3f3ea79992041bb0d67b32487264, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _as: {fileID: 1388461124}
-  al: {fileID: 11400000, guid: c09d89c2d0914974d983bf4b856b478d, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,6 +758,7 @@ MonoBehaviour:
   wodth: 5000
   heeght: 200
   projectionPlane: {fileID: 530253619}
+  sampleBundle: 0
 --- !u!4 &1229486525
 Transform:
   m_ObjectHideFlags: 0
@@ -1079,4 +1065,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 67bc4240789c42145915605a56f3f04e, type: 2}
   - {fileID: 11400000, guid: 456c31e36ad97b048a56acdc13c6eb3c, type: 2}
   - {fileID: 11400000, guid: e00167242c5c25940a7f0596f0f3502e, type: 2}
-  ALBundles: []
+  ALBundles:
+  - {fileID: 11400000, guid: e68dad6770ef5284e8dfae6725ea48a2, type: 2}

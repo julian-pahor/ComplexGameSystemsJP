@@ -5,7 +5,8 @@ using UnityEngine;
 using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine.Rendering.VirtualTexturing;
-
+using System.Linq.Expressions;
+using UnityEngine.UI;
 
 [CustomEditor(typeof(AudioFile))]
 public class AudioFileEditor : Editor
@@ -32,11 +33,23 @@ public class AudioFileEditor : Editor
 
         VisualElement audioFile = UQueryExtensions.Query(root, name = "AudioFile");
 
-        //VisualElement volumeField = UQueryExtensions.Query(root, name = "VolumeField");
+        VisualElement volumeField = UQueryExtensions.Query(root, name = "VolumeField");
 
-        //volume.RegisterValueChangedCallback(OnPointerUp);
+        PropertyField volumeProperty = (PropertyField)volumeField;
 
-        //volumeField.RegisterCallback<ChangeEvent<Object>, VisualElement>(WaveUpdate, waveTarget);
+        VisualElement clipButton = UQueryExtensions.Query(root, name = "ClipButton");
+
+        UnityEngine.UIElements.Button clipReset = (UnityEngine.UIElements.Button) clipButton;
+
+        VisualElement clipToggle = UQueryExtensions.Query(root, name = "ClipEnable");
+
+        PropertyField clipProperty = (PropertyField)clipToggle;
+
+        clipReset.clicked += OnButton;
+
+        volumeProperty.RegisterValueChangeCallback(ReDraw);
+
+        clipProperty.RegisterValueChangeCallback(ReDraw);
 
         audioFile.RegisterCallback<ChangeEvent<Object>, VisualElement>(WaveUpdate, waveTarget);
 
@@ -48,6 +61,11 @@ public class AudioFileEditor : Editor
         {
             waveTarget.style.backgroundImage = baseObj.GetCacheTex();
             dirty = false;
+        }
+        else if (baseObj.soundFile != null)
+        {
+            baseObj.FillTex();
+            waveTarget.style.backgroundImage = baseObj.GetCacheTex();
         }
 
         return root;
@@ -88,17 +106,57 @@ public class AudioFileEditor : Editor
 
     private void OnPointerDown(PointerDownEvent evt)
     {
-        if(evt.button == 0)//Left Click
+        //returns early if clip is not enabled
+        //will need to add fadeEnable check later on
+        if (!baseObj.clipEnable)
         {
-            Debug.Log((evt.localPosition.x /waveTarget.resolvedStyle.width) * 100 + "Percentage In Clip");
-
+            return;
         }
-        else if(evt.button == 1) //Right Button
+
+        float per = evt.localPosition.x / waveTarget.resolvedStyle.width;
+        Debug.Log(per);
+
+        if(evt.modifiers == EventModifiers.Shift)
+        {
+            if (evt.button == 0)//Left Click
+            {
+                //Fade Set
+                EditorUtility.SetDirty(baseObj);
+            }
+            else if (evt.button == 1) //Right Button
+            {
+                //Fade Set
+                EditorUtility.SetDirty(baseObj);
+            }
+        }
+        else if (evt.modifiers == EventModifiers.None)
         {
 
+            if (evt.button == 0)//Left Click
+            {
+                baseObj.SetClipStart(per);
+                EditorUtility.SetDirty(baseObj);
+            }
+            else if (evt.button == 1) //Right Button
+            {
+                baseObj.SetClipEnd(per);
+                EditorUtility.SetDirty(baseObj);
+            }
+
+            WaveUpdate(new ChangeEvent<Object>(), waveTarget);
         }
     }
 
+    private void ReDraw(SerializedPropertyChangeEvent evt)
+    {
+        WaveUpdate(new ChangeEvent<Object>(), waveTarget);
+    }
+
+    private void OnButton()
+    {
+        baseObj.ResetClipping();
+        WaveUpdate(new ChangeEvent<Object>(), waveTarget);
+    }
 }
 
 

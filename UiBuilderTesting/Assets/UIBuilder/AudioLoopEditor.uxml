@@ -1,9 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <ui:Label text="Audio Loop" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 18px; -unity-font-style: bold; -unity-text-align: upper-center;" />
-    <uie:PropertyField binding-path="soundFile" name="AudioFile" style="border-bottom-width: 4px; border-top-width: 4px;" />
-    <ui:VisualElement style="margin-top: 4px; margin-bottom: 4px; background-color: rgb(0, 0, 0);">
+    <ui:VisualElement style="background-color: rgba(37, 102, 108, 255);">
+        <ui:Label text="Audio Loop" display-tooltip-when-elided="true" enable-rich-text="true" style="font-size: 18px; -unity-font-style: bold-and-italic; -unity-text-align: upper-center;" />
+        <uie:PropertyField binding-path="soundFile" name="AudioFile" style="border-bottom-width: 4px; border-top-width: 4px;" />
         <uie:PropertyField binding-path="m_volume" name="VolumeField" />
         <uie:PropertyField binding-path="m_pitch" name="PropertyField" />
+        <uie:PropertyField binding-path="spatialPosition" style="align-items: center;" />
+        <uie:PropertyField binding-path="looping" style="align-items: center;" />
+        <uie:PropertyField binding-path="clipEnable" name="ClipEnable" style="align-items: center;" />
+        <ui:Button text="Reset Clipping Boundaries" display-tooltip-when-elided="true" enable-rich-text="true" name="ClipButton" style="font-size: 10px;" />
+        <ui:IMGUIContainer name="WavePreview" style="background-image: none; height: 100px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;" />
     </ui:VisualElement>
-    <ui:IMGUIContainer name="WavePreview" style="background-image: none; height: 100px;" />
 </ui:UXML>

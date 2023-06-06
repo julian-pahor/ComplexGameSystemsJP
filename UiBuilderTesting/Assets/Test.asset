@@ -18,9 +18,9 @@ MonoBehaviour:
   m_pitch: 1
   spatialPosition: 1
   looping: 1
-  clipEnable: 1
-  startTime: 0.37809524
-  endTime: 0.37809524
+  clipEnable: 0
+  startTime: 0
+  endTime: 0
   fadeEnable: 0
   fadeInDuration: 0.5549688
   fadeOutDuration: 0.5549688

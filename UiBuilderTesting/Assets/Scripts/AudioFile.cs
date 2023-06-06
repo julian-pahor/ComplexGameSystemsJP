@@ -11,7 +11,7 @@ public class AudioFile : ScriptableObject
     public AudioClip soundFile;
     public AudioClip audio;
     [Header("Local Volume + Pitch Settings")]
-    [Range(0f, 1f)]
+    [Range(0f, 2f)]
     public float m_volume = 1f;
     [Range(-1f, 2f)]
     public float m_pitch = 1f;
@@ -84,6 +84,11 @@ public class AudioFile : ScriptableObject
 
         int f = 0;
 
+        float startIndex = (startTime / soundFile.length);
+        startIndex *= width;
+        float endIndex = ((soundFile.length - endTime) / soundFile.length);
+        endIndex *= width;
+
         var data = m_texture.GetRawTextureData<Color32>();
         // https://docs.unity3d.com/ScriptReference/Texture2D.GetRawTextureData.html
 
@@ -99,7 +104,7 @@ public class AudioFile : ScriptableObject
         }
 
         Color32 black = new Color32(0, 0, 0, 255);
-        Color32 orange = new Color32(255, 165, 0, 255);
+        Color32 tomato = new Color32(255, 99, 71, 100);
         Color32 cyan = new Color32(154, 244, 249, 255);
 
         //drawing index = bottom left -> bottom right -> up row
@@ -108,8 +113,16 @@ public class AudioFile : ScriptableObject
             int i = 0;
 
             bool trigger = false;
+            if(clipEnable && (x <= (int)startIndex || x >= (int)endIndex))
+            {
+                for (int y = 0; y < m_texture.height; y++)
+                {
+                    int index = (x + (y * (int)width));
 
-            if (texSamples[x] > 0)
+                    data[index] = tomato;
+                }
+            }
+            else if (texSamples[x] > 0)
             {
                 //drawing from peak
                 for (int y = m_texture.height - 1; y > -1; y--)
@@ -175,5 +188,21 @@ public class AudioFile : ScriptableObject
         cacheTex = m_texture;
 
         cacheClip = soundFile;
+    }
+
+    public void SetClipStart(float f)
+    {
+        startTime = soundFile.length * f;
+    }
+
+    public void SetClipEnd(float f)
+    {
+        endTime = soundFile.length - (soundFile.length * f);
+    }
+
+    public void ResetClipping()
+    {
+        startTime = 0;
+        endTime = 0;
     }
 }
